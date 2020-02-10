@@ -17,8 +17,12 @@ public class BigIntegerCheatSheet {
         // differs from remainder() in that it always returns a non-negative BigInteger
         res = bi1.mod(BigInteger.TWO);
 
-        if (bi1.remainder(BigInteger.TWO) != BigInteger.ZERO) 
+        if (bi1.remainder(BigInteger.TWO) != BigInteger.ZERO) {
+            // To increment value by, you also need to assign it back to the same object
+            // because BigInteger is immutable, and therefore every attempt to modify
+            // an existing object results in creation of an entirely new object
             bi1 = bi1.add(BigInteger.ONE);
+        }
         
         res = bi1.max(bi2); res = bi1.min(bi2);
         res = bi1.abs(); res = bi1.gcd(bi2); 
