@@ -7,7 +7,7 @@ import java.util.StringJoiner;
 public class StringCheatSheet {
 
     public static void main(String[] args) {
-        /* BUILD A STRING FROM LIST OF INTEGERS */
+        /* BUILD A STRING OF DELIMITED ITEMS FROM LIST OF INTEGERS */
         List<Integer> l = new ArrayList<Integer>();
         l.add(1); l.add(2); l.add(3); l.add(4);
         
@@ -17,7 +17,7 @@ public class StringCheatSheet {
         }
         System.out.println(joiner.toString()); // 1, 2, 3, 4
         
-        /* BUILD A STRING FROM LIST OF STRINGS */
+        /* BUILD A STRING OF DELIMITED ITEMS FROM LIST OF STRINGS */
         List<String> sl = new ArrayList<String>();
         sl.add("ab"); sl.add("cd"); sl.add("ef"); sl.add("gh");
         String resultString = String.join(", ", sl);
