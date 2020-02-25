@@ -31,12 +31,23 @@ public class CollectionsCheatSheet {
         al.add(1, 4); // add 4 at index 1
         
         for (int i = 0; i < al.size(); ++i)
-            System.out.println(al.get(i));
+            System.out.print(al.get(i) + " ");
+        System.out.println();
+        
         for (Integer n : al)
-            System.out.println(n);
+            System.out.print(n + " ");
+        System.out.println();
+        
+        Iterator<Integer> alItr = al.iterator();
+        while (alItr.hasNext()) {
+            int e = alItr.next();
+            System.out.print(e + " ");
+            if (e == 1) alItr.remove();
+        }
+        System.out.println();
         
         Collections.sort(al, new Comp());
-        System.out.println(al); // [4, 3, 2, 1]
+        System.out.println(al); // [4, 3, 2]
         
         /* >>> LinkedList <<< */
         LinkedList<Integer> ll = new  LinkedList<Integer>();
@@ -44,28 +55,35 @@ public class CollectionsCheatSheet {
         ll.add(1, 4); // adds 4 at index 1
         
         for (int i = 0; i < ll.size(); ++i)
-            System.out.println(ll.get(i));
+            System.out.print(ll.get(i) + " ");
+        System.out.println();
+        
         for (Integer n : ll)
-            System.out.println(n);
+            System.out.print(n + " ");
+        System.out.println();
+        
         Iterator<Integer> itr = ll.iterator();
         while (itr.hasNext()) {
             int e = itr.next();
-            System.out.println(e);
+            System.out.print(e + " ");
             if (e == 1) itr.remove();
         }
+        System.out.println();
         
         int e = ll.remove(); // removes and returns first element
         e = ll.remove(1); // removes and returns element at index 1
         e = ll.removeFirst(); e = ll.removeLast();
         
         // removes first occurrence of given object
-        ll.remove(Integer.valueOf(1)); ll.removeFirstOccurrence(2);
-        ll.removeLastOccurrence(3);
+        boolean isRemoved = ll.remove(Integer.valueOf(1)); // need to call for Integer object instead of int
+                                                           // because of overloaded method for removal by index
+        isRemoved = ll.removeFirstOccurrence(2);
+        isRemoved = ll.removeLastOccurrence(3);
         
         /* >>> Queue <<< */
         // Array based implementation of queue
-        // ArrayDeque implements Deque, Deque implements Queue
-        // ArrayDeque implementation of Queue does not allow null insertion
+        // Note 1: ArrayDeque implements Deque, Deque implements Queue
+        // Note 2: ArrayDeque implementation of Queue does not allow null insertion
         Queue<Integer> q = new ArrayDeque<Integer>();
         q.add(1); q.add(2); q.add(3); 
         boolean b = q.contains(2); int f = q.peek(); f = q.poll();
@@ -73,15 +91,17 @@ public class CollectionsCheatSheet {
         System.out.println(q); // [2, 3]
         
         // LinkedList based implementation of queue
-        // LinkedList implements Deque, Deque implements Queue
-        // LinkedList implementation of Queue allows null insertion
+        // Note 1: LinkedList implements Deque, Deque implements Queue
+        // Note 2: LinkedList implementation of Queue allows null insertion
         Queue<Integer> q2 = new LinkedList<Integer>();
         q2.add(1); q2.add(2); q2.add(3); q2.add(null); 
         b = q2.contains(2); f = q2.peek(); f = q2.poll();
         System.out.println(q2); // [2, 3, null]
+        
         while (!q2.isEmpty()) {
-            System.out.println(q2.poll());
+            System.out.print(q2.poll() + " ");
         }
+        System.out.println();
         
         /* >>> Stack <<< */
         Stack<Integer> s = new Stack<Integer>();
@@ -89,15 +109,22 @@ public class CollectionsCheatSheet {
         e = s.peek(); e = s.pop();
         System.out.println(s); // [1, 2]
         
+        while (!s.isEmpty()) {
+            System.out.print(s.pop() + " ");
+        } // 2 1
+        System.out.println();
+        
         /* >>> Hashtable <<< */
         Set<String> set = new HashSet<String>();
         set.add("abc"); set.add("ghi"); set.add("def");
         System.out.println(set); // [abc, def, ghi]
         for (String st : set) {
-            System.out.println(st);
+            System.out.print(st + " ");
         }
+        System.out.println();
+        
         System.out.println(set.contains("abc"));
-        boolean isRemoved = set.remove("abc");
+        isRemoved = set.remove("abc");
         System.out.println(isRemoved); // true
         set.clear();
         
@@ -106,8 +133,10 @@ public class CollectionsCheatSheet {
         bst.add("b"); bst.add("a"); bst.add("c");
         System.out.println(bst); // [a, b, c]
         for (String st : bst) {
-            System.out.println(st);
+            System.out.print(st + " ");
         }
+        System.out.println();
+        
         System.out.println(bst.contains("a"));
         isRemoved = bst.remove("a");
         bst.clear();
