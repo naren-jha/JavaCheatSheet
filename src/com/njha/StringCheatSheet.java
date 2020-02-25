@@ -22,7 +22,18 @@ public class StringCheatSheet {
         sl.add("ab"); sl.add("cd"); sl.add("ef"); sl.add("gh");
         String resultString = String.join(", ", sl);
         System.out.println(resultString); // ab, cd, ef, gh
+        
+        /* CHECK IF A STRING IS NULL OR EMPTY */
+        String s = "  ";
+        System.out.println(isNullOrEmpty(s)); // true
 
+    }
+    
+    // checks if a string is null or empty
+    public static boolean isNullOrEmpty(String str) {
+        if(str != null && !str.trim().isEmpty())
+            return false;
+        return true;
     }
     
 }
