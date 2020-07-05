@@ -129,6 +129,7 @@ public class CollectionsCheatSheet {
         set.clear();
         
         /* >>> Balanced BST - RedBlackTree <<< */
+        System.out.println("rbt");
         Set<String> bst = new TreeSet<String>();
         bst.add("b"); bst.add("a"); bst.add("c");
         System.out.println(bst); // [a, b, c]

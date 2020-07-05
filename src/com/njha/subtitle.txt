@@ -1,0 +1,403 @@
+Finding the maximum flow begins
+with having what's called a flow graph.
+this is a graph where edges have a
+certain maximum capacity which cannot be
+exceeded.
+edges also have a flow value
+which represents how many units of flow are
+passing through that edge. 
+initially the
+flow is 0 for all edges everywhere until
+we run a max flow algorithm on it. 
+
+
+there
+are also two special types of nodes in
+the flow graph - the source node and the
+sink node usually denoted as s and t
+respectively. 
+the maximum flow problem
+asks with an infinite input source how
+much flow can we push through the
+network without exceeding the capacity
+of any edge.
+
+
+maximum flow
+can be used in numerous situations where
+edges and nodes can represent any number
+of things; for instance suppose the edges
+are roads with cars, or pipes of water, wires
+with electric current and so on. each of
+those has a certain capacity value we
+can associate with 
+
+
+the maximum flow on
+the other hand would represent the
+volume of water that can flow through
+the pipe, or the number of cars the roads
+can sustain and traffic or the net
+electric current that your system can
+sustain
+
+
+effectively the maximum flow is
+a bottleneck value for the amount of
+traffic your network can handle; and that
+is going from the source to the sink
+under all those constraints. 
+the maximum
+flow for the network shown below is 7,
+and we can tell that because after
+running the maximum flow algorithm, the sum of
+the flows attached to the sink node is
+seven 
+
+
+when we run a maximum flow algorithm, it
+determines how much flow each
+edge should receive to achieve the
+overall maximum flow.
+note that there
+might be multiple ways of achieving the
+maximum flow by giving each edge
+different flow values, but overall
+solutions will have the same maximum
+flow value 
+
+
+let's dig deeper into how to
+find the maximum flow. 
+
+
+to begin with we 
+will need a flow graph which consists of
+directed edges which are also called
+arcs. 
+each directed Edge has a certain
+capacity which can receive a certain
+amount of flow 
+
+
+at all times,
+the flow running through an edge must be
+less than or equal to the capacity.
+this
+intuitively makes sense because if we
+allow more flow than what the capacity
+permits, it means something has to go
+wrong.
+When an edge becomes over
+capacitated in some manner, it means that
+we've pushed the system past its limit.
+in the context of edges representing
+pipes with water, it means your pipe
+broke or it leaked.
+if your edge is a
+wire with electric current, it means your
+wire literally fried, melted, or exploded,
+or something bad happened to it, because
+there was too much electric current. 
+this
+is not good so this is why we don't
+allow more flow than capacity 
+
+
+each edge
+in the flow graph has a certain flow and
+capacity specified by the two values
+separated by a slash, adjacent to each
+edge (as can be seen in the image below).
+originally the flow through each
+Edge is zero and the capacity is a non-negative value 
+
+
+to find the maximum flow
+and also the min cut as a by-product, the
+ford-fulkerson method repeatedly finds
+augmenting paths through the residual
+graph and arguments the flow until no
+more augmenting paths can be found 
+
+
+so what is an augmenting path? 
+what is a residual graph? 
+and what do
+we mean by augment the flow? 
+
+
+an augmenting path is a path
+of edges in the residual graph, with
+capacity greater than zero from the
+source s to the sink t.
+in orange here we
+have highlighted a possible argumenting path
+
+
+a key thing to remember about an
+augmenting path is that it can only flow
+through edges which aren't fully
+saturated yet. 
+in fact you know you've
+achieved the maximum flow when there are
+no more augmenting paths left to be
+found 
+
+
+how to actually find an augmenting
+path, is a detail left unspecified by the
+ford-fulkerson method, for flexibility.
+for now let's assume that we're using a
+depth-first search 
+
+
+something else to
+know, is that every augmenting path will
+have what we can call a bottleneck value,
+which is the smallest edge along the
+path. 
+we can find the value of the
+bottleneck by taking the difference
+between the capacity and the current
+flow of an edge. 
+for this augmenting
+path the bottleneck value is 6 
+
+
+we can
+use the bottleneck value to agument the
+flow along the path.
+augmenting the flow
+simply means to update the flow values
+of the edges along the augmenting path
+
+
+here you can see that we've increased the
+flow of each edge along the augmenting
+path by exactly 6 units
+
+
+however we're
+not done augmenting the flow. 
+we not only
+need to increase the flow along the
+forward edges but also decrease the flow
+along the backwards edges which are
+called a residual edges. 
+the residual
+edges are the dotted edges going
+backwards in the reverse order of the
+augmenting path 
+
+
+the logic behind having
+residual edges is to undo bad choices of
+augmenting paths which do not lead to a
+maximum flow 
+
+
+effectively we don't know
+which are the best or even correct
+augmenting paths to take. 
+so this
+mechanism enables us to freely find any
+augmenting paths without having to worry
+about whether or not we'll be able to
+achieve the maximum flow 
+
+
+it should be
+mentioned that, residual edges become
+valid edges to take when finding an
+augmenting path in later
+iterations 
+
+
+so if we take a step back, we
+can think of every edge in the original
+graph as having a residual edge with a
+flow and capacity of zero, which is not
+usually shown 
+
+
+now that we know what
+residual edges are, the term residual
+graph simply means the graph which also
+contains residual edges, not just the
+original edges given in the flow graph
+
+
+so generally speaking, while implementing 
+Ford-Fulkerson, whenever we say
+the flow graph, it usually means the
+residual graph.
+
+
+so here's a good question
+you might have at this point. the
+residual edges shown have a capacity of
+zero, aren't those forbidden? 
+how does that work? 
+
+
+so here's the thing; with this
+method of augmenting the flow, we have
+to think of the remaining capacity of an
+edge e (residual or not) as the difference
+between the capacity and the flow of
+that edge. 
+
+
+that is the difference between
+the capacity and the flow is the true
+remaining capacity for that edge. 
+this
+ensures that the remaining capacity of
+an edge is always non-negative, even if
+the flow can be negative. 
+for example in
+the residual edges we have right now 
+(0 - (-6)) = 6. 
+so we know that all
+our residual edges actually have a
+remaining capacity of 6. 
+
+
+so the algorithm
+proceeds and the ford-fulkerson method
+continues to repeatedly find augmenting
+path after augmenting paths, and to
+augment the flow until no more
+augmenting paths from s to t can be
+found.
+
+
+the key realization to make at
+this point
+is that the sum of the bottleneck values
+that we acquire with each augmenting
+paths will result in the maximum flow,
+and that's the whole premise of this
+algorithm. 
+it doesn't matter so much how
+we find augmenting paths, but so long as
+we keep summing the bottleneck values
+which they produce, we'll find the
+maximum flow. 
+
+
+so let's keep finding
+augmenting paths. 
+remember that we can
+only select edges (to be part of
+the augmenting path), whose remaining
+capacity is greater than 0.
+
+
+so the bottleneck for this
+augmenting path is 4, since 4 is the
+minimum of all the remaining capacities
+along this augmenting path.
+
+
+here is another augmenting path from the
+source to the sink. 
+we notice that
+we're actually using one of the residual
+edges we created earlier in this path.
+we also notice that there are two
+purple edges in this slide this is just
+a coincidence since both of those edges
+have the same bottleneck value of 6. 
+and then we argument the flow for this 
+augmenting path as well
+
+
+similarly, we keep finding the augmenting path,
+and we keep augmenting the flow.
+at the end we can see that if we sum all
+the bottleneck values 6 4 6 & 4, we're
+able to achieve the maximum flow, which
+is 20. 
+
+
+in terms of the time complexity,
+the ford-fulkerson method derives its
+complexity from how we actually find
+those augmenting paths, which as we know
+is left as an unspecified detail. 
+if we
+assume that to find augmenting paths it
+uses depth-first search, then
+the algorithm runs in a time complexity
+of O(fE), where f is the maximum flow the 
+algorithm calculates
+and E the total number of edges in the graph.
+
+
+here is a graph where we can derive the
+time complexity. 
+suppose that the side
+edges have very high capacity values of
+100 and the middle edge has a capacity
+of 1. 
+we can clearly tell that the
+maximum flow should be 200 because we
+can run two augmenting paths with flow
+values of 100 on the top and the bottom
+of the graph, from the source to the sink.
+
+
+however, recall that a DFS
+traversal is essentially random, so it's
+possible that it picks that middle
+edge with a capacity of 1 every single
+time and what that will do is, it'll
+limit flow we can push from the source
+the sink to be 1, so 1 is always going to
+be our bottleneck value, so we're never
+going
+to be able to augment the flow by more
+than one unit. 
+this results in flipping
+back and forth between the same two
+alternating paths for 200 iterations.
+which really kills the time complexity.
+
+
+luckily much faster algorithms and
+better heuristics exist to find the
+maximum flow value.
+one example is Edmonds-Karp, which is
+Ford-Fulkerson but instead of using a
+depth-first search, it uses a breadth-first
+search to find the shortest augmenting
+path from the source to the sink in
+every iteration.
+
+
+there's also Capacity scaling which is
+the idea of picking larger paths first
+to reduce the number of paths you need
+to find overall, and this turns out to
+work really well. 
+
+
+then there's Dinic's algorithm which
+uses a combination of a breadth-first
+search to first find a layered graph,
+that guides edges towards the sink, which
+you then use a depth-first search to
+actually find the augmenting paths.
+
+
+there's also this idea of Push Relable
+algorithms which work differently than
+the algorithms we've discussed here, i.e,
+try and find augmenting paths,
+instead Push Relable algorithms
+maintain this concept of a free flow,
+to find the maximum flow of a
+network. 
+
