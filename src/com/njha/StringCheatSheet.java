@@ -7,6 +7,30 @@ import java.util.StringJoiner;
 public class StringCheatSheet {
 
     public static void main(String[] args) {
+        delimitedItemOfInteger();
+        
+        delimitedItemOfString();
+        
+        nullOrEmpty();
+
+    }
+
+    private static void nullOrEmpty() {
+        /* CHECK IF A STRING IS NULL OR EMPTY */
+        String s = "  ";
+        System.out.println(isNullOrEmpty(s)); // true
+        System.out.println(isNullOrEmpty(null)); // true
+    }
+
+    private static void delimitedItemOfString() {
+        /* BUILD A STRING OF DELIMITED ITEMS FROM LIST OF STRINGS */
+        List<String> sl = new ArrayList<String>();
+        sl.add("ab"); sl.add("cd"); sl.add("ef"); sl.add("gh");
+        String resultString = String.join(", ", sl);
+        System.out.println(resultString); // ab, cd, ef, gh
+    }
+
+    private static void delimitedItemOfInteger() {
         /* BUILD A STRING OF DELIMITED ITEMS FROM LIST OF INTEGERS */
         List<Integer> l = new ArrayList<Integer>();
         l.add(1); l.add(2); l.add(3); l.add(4);
@@ -16,24 +40,11 @@ public class StringCheatSheet {
             joiner.add(cs.toString());
         }
         System.out.println(joiner.toString()); // 1, 2, 3, 4
-        
-        /* BUILD A STRING OF DELIMITED ITEMS FROM LIST OF STRINGS */
-        List<String> sl = new ArrayList<String>();
-        sl.add("ab"); sl.add("cd"); sl.add("ef"); sl.add("gh");
-        String resultString = String.join(", ", sl);
-        System.out.println(resultString); // ab, cd, ef, gh
-        
-        /* CHECK IF A STRING IS NULL OR EMPTY */
-        String s = "  ";
-        System.out.println(isNullOrEmpty(s)); // true
-
     }
     
     // checks if a string is null or empty
-    public static boolean isNullOrEmpty(String str) {
-        if(str != null && !str.trim().isEmpty())
-            return false;
-        return true;
+    private static boolean isNullOrEmpty(String str) {
+        return str == null || str.trim().isEmpty();
     }
     
 }

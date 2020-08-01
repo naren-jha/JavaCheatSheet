@@ -1,403 +1,367 @@
-Finding the maximum flow begins
-with having what's called a flow graph.
-this is a graph where edges have a
-certain maximum capacity which cannot be
-exceeded.
-edges also have a flow value
-which represents how many units of flow are
-passing through that edge. 
-initially the
-flow is 0 for all edges everywhere until
-we run a max flow algorithm on it. 
+Dinic's algorithm is one of those
+extremely fast and revolutionary
+algorithms which really pushed the field
+of network flow forwards.
+it was one if
+not the first algorithm to introduce a
+bunch of new concepts like building a
+level graph, combining multiple graph
+traversal techniques together, and the
+concept of a blocking flow.
 
 
-there
-are also two special types of nodes in
-the flow graph - the source node and the
-sink node usually denoted as s and t
-respectively. 
-the maximum flow problem
-asks with an infinite input source how
-much flow can we push through the
-network without exceeding the capacity
-of any edge.
+Dinic's algorithm is a fast a strongly
+polynomial maximum flow algorithm. 
+the
+fact that it's strongly polynomial is
+important, because
+it means that the runtime of the algorithm
+doesn't depend on the capacity values of
+the flow graph. 
+time complexity of Dinic's algorithm is O(EV2).
 
 
-maximum flow
-can be used in numerous situations where
-edges and nodes can represent any number
-of things; for instance suppose the edges
-are roads with cars, or pipes of water, wires
-with electric current and so on. each of
-those has a certain capacity value we
-can associate with 
+what's remarkable
+about Dinic's is that not only is it fast
+in practice for general graphs, but it
+boosts performance on bipartite graphs - 
+running in a time complexity of O(√VE)
+the importance of
+this cannot be overstated. 
+it makes it
+possible to handle bipartite graphs of a
+ridiculous size. 
+if you're doing
+competitive programming, Dinic's is the 
+de facto standard algorithm to solve
+maximum flow problems. 
 
 
-the maximum flow on
-the other hand would represent the
-volume of water that can flow through
-the pipe, or the number of cars the roads
-can sustain and traffic or the net
-electric current that your system can
-sustain
+the algorithm
+was conceived in 1969 by Yefim Dinitz
+and published in 1970. 
+it was
+later modified slightly and popularized
+by Shimon Evan, mispronouncing Dinitz
+as Dinic's. 
 
 
-effectively the maximum flow is
-a bottleneck value for the amount of
-traffic your network can handle; and that
-is going from the source to the sink
-under all those constraints. 
-the maximum
-flow for the network shown below is 7,
-and we can tell that because after
-running the maximum flow algorithm, the sum of
-the flows attached to the sink node is
-seven 
+To understand the intuition behind the algorithm,
+let's begin by making an analogy.
+suppose you and your friend are planning to
+meet up at a coffee shop - a few streets
+east of where you are. 
 
 
-when we run a maximum flow algorithm, it
-determines how much flow each
-edge should receive to achieve the
-overall maximum flow.
-note that there
-might be multiple ways of achieving the
-maximum flow by giving each edge
-different flow values, but overall
-solutions will have the same maximum
-flow value 
+you've never been
+to this coffee shop and you don't
+exactly know where it is.
+but you know
+it's somewhere East. 
 
 
-let's dig deeper into how to
-find the maximum flow. 
+so how would you get
+there? 
+with the information you have,
+would it make sense to
+South? what about North-West? 
+actually the only
+sensible directions are East, North-East
+and South-East. 
 
 
-to begin with we 
-will need a flow graph which consists of
-directed edges which are also called
-arcs. 
-each directed Edge has a certain
-capacity which can receive a certain
-amount of flow 
+this is because you know
+that those directions guarantee that you
+make a positive progress towards the
+coffee shop. 
+this form of heuristic
+ensures that we continuously make
+progress towards whatever place of
+interest we desire to go. 
 
 
-at all times,
-the flow running through an edge must be
-less than or equal to the capacity.
+so how can we
+apply this concept while solving the
+maximum flow problem? 
+in this analogy YOU are the
+source node and the COFFEE SHOP is the
+sink. 
+the main idea behind Dinic's
+algorithm is to guide augmenting paths
+from the source to the sink, using a
+level graph, and in doing so greatly
+reducing the runtime. 
+
+
+the way Dinic's
+determines what edges make progress
+towards the sink t, and which do not, is
+by building what's called a level graph.
+the levels of a graph are those obtained
+by doing a Breadth-First Search from the
+source. 
+furthermore, an edge is only part
+of the level graph if it makes progress
+towards the sink. 
+that means an edge must go
+from a node at level L to another node
+at level L + 1. 
+
+
+the requirement that
+edges must go from L to L + 1 prunes
+backwards or what we can call sideways edges.
+those are all the gray edges in the
+figure below. 
+
+
+as an example, if we're trying
+to get from s to t as quickly as
+possible, does it make sense to take the
+red edge going in the backwards
+direction (see figure below)? No! it does not. 
+taking the red
+edge doesn't bring us any closer to the
+sink, so it should only be taken if a
+detour is required. 
+this is why backward
+edges are omitted from the level graph.
+
+
+the same thing can be said about edges
+which cut across sideways, across the
+same level, since no progress is made.
+
+
+it's also worth mentioning that residual
+edges can be made part of the level
+graph but they must have a remaining
+capacity greater than zero. 
+
+
+so that was the
+level graph. 
+the actual steps to
+executing Dinic's
+are as follows - 
+
+
+1. first construct a level
+graph by doing a Breadth-First Search
+from the source to label all the levels
+of the current flow graph. 
+
+
+2. if the
+sink was never reached while building
+the level graph, then we can stop
+and return the value of the maximum flow.
+
+
+3. then using only valid edges in the level
+graph, do multiple Depth-First Searches
+from the source to the sink until a
+blocking flow is reached. 
+and sum over
+the bottleneck values of all augmenting
+paths to calculate the maximum flow 
+
+
+then repeat steps 1 to 3.
+
+
+a blocking
+flow is when we cannot find any more
+paths from the source to the sink
+because too many edges in the level
+graph have been saturated.
+
+
+Now that we understand the algorithm on high level,
+let's clear things out with an example.
+Let's find maximum flow for the following flow graph using 
+Dinic's algorithm.
+if this was a
+bipartite graph we would also be able to
+get a maximum matching as a result. 
+
+
+step one is to figure out which
+edges are part of the current level
+graph. 
+we don't need to think of the
+level graph as a totally separate graph.
+we can think of it as a subset
+of the edges. 
+
+
+so we start at the source
+and do a breadth-first search outwards.
+the first layer includes all the red
+nodes, second layer the green nodes and
+the third layer the purple nodes as shown in figure below.
+
+
+now if we
+focus on the edges which form the level
+graph, we can see that they are all the edges
+which go from L to L + 1 in level
+and have a remaining capacity > 0 
+
+
+step two of the algorithm is
+to find paths from s to t
+until a blocking flow is reached
+(i.e., when we cannot find any more paths through
+the level graph). 
+
+
+so we start at the
+source and do a Depth-First Search on
+the edges of level graph until the sink
+is reached. 
+
+
+below figure shows our first
+augmenting path in the level graph.
+the bottleneck value
+along this path is 5, since 5 is the
+smallest remaining capacity. 
+
+
+so we update
+the flow values along the path by 5. 
+
+
+if we inspect the graph the blocking flow
+has not yet been reached, since there
+still exists paths from s to t. 
+
+
+so we start once
+again at the source and do a Depth-First
+Search forwards. 
+Below figure shows another augmenting
+path from s to t. 
+this one has a bottleneck value of 15. 
+
+
+so augment the flow along the path by
+15 units. 
+
+
+now let's try to find another
+path from s to t. 
+what happens now is
+that we get stuck performing the
+Depth-First Search. 
+there are no edges in
+the level graph with a remaining
+capacity > 0, which can
+lead us to the sink. 
+so the blocking flow
+has been reached. 
+
+
+we just finished the
+first blocking flow iteration. 
+now we
+reset and rebuild the level graph. 
 this
-intuitively makes sense because if we
-allow more flow than what the capacity
-permits, it means something has to go
-wrong.
-When an edge becomes over
-capacitated in some manner, it means that
-we've pushed the system past its limit.
-in the context of edges representing
-pipes with water, it means your pipe
-broke or it leaked.
-if your edge is a
-wire with electric current, it means your
-wire literally fried, melted, or exploded,
-or something bad happened to it, because
-there was too much electric current. 
-this
-is not good so this is why we don't
-allow more flow than capacity 
-
-
-each edge
-in the flow graph has a certain flow and
-capacity specified by the two values
-separated by a slash, adjacent to each
-edge (as can be seen in the image below).
-originally the flow through each
-Edge is zero and the capacity is a non-negative value 
-
-
-to find the maximum flow
-and also the min cut as a by-product, the
-ford-fulkerson method repeatedly finds
-augmenting paths through the residual
-graph and arguments the flow until no
-more augmenting paths can be found 
-
-
-so what is an augmenting path? 
-what is a residual graph? 
-and what do
-we mean by augment the flow? 
-
-
-an augmenting path is a path
-of edges in the residual graph, with
-capacity greater than zero from the
-source s to the sink t.
-in orange here we
-have highlighted a possible argumenting path
-
-
-a key thing to remember about an
-augmenting path is that it can only flow
-through edges which aren't fully
-saturated yet. 
-in fact you know you've
-achieved the maximum flow when there are
-no more augmenting paths left to be
-found 
-
-
-how to actually find an augmenting
-path, is a detail left unspecified by the
-ford-fulkerson method, for flexibility.
-for now let's assume that we're using a
-depth-first search 
-
-
-something else to
-know, is that every augmenting path will
-have what we can call a bottleneck value,
-which is the smallest edge along the
-path. 
-we can find the value of the
-bottleneck by taking the difference
-between the capacity and the current
-flow of an edge. 
-for this augmenting
-path the bottleneck value is 6 
-
-
-we can
-use the bottleneck value to agument the
-flow along the path.
-augmenting the flow
-simply means to update the flow values
-of the edges along the augmenting path
-
-
-here you can see that we've increased the
-flow of each edge along the augmenting
-path by exactly 6 units
-
-
-however we're
-not done augmenting the flow. 
-we not only
-need to increase the flow along the
-forward edges but also decrease the flow
-along the backwards edges which are
-called a residual edges. 
-the residual
-edges are the dotted edges going
-backwards in the reverse order of the
-augmenting path 
-
-
-the logic behind having
-residual edges is to undo bad choices of
-augmenting paths which do not lead to a
-maximum flow 
-
-
-effectively we don't know
-which are the best or even correct
-augmenting paths to take. 
-so this
-mechanism enables us to freely find any
-augmenting paths without having to worry
-about whether or not we'll be able to
-achieve the maximum flow 
-
-
-it should be
-mentioned that, residual edges become
-valid edges to take when finding an
-augmenting path in later
-iterations 
-
-
-so if we take a step back, we
-can think of every edge in the original
-graph as having a residual edge with a
-flow and capacity of zero, which is not
-usually shown 
-
-
-now that we know what
-residual edges are, the term residual
-graph simply means the graph which also
-contains residual edges, not just the
-original edges given in the flow graph
-
-
-so generally speaking, while implementing 
-Ford-Fulkerson, whenever we say
-the flow graph, it usually means the
-residual graph.
-
-
-so here's a good question
-you might have at this point. the
-residual edges shown have a capacity of
-zero, aren't those forbidden? 
-how does that work? 
-
-
-so here's the thing; with this
-method of augmenting the flow, we have
-to think of the remaining capacity of an
-edge e (residual or not) as the difference
-between the capacity and the flow of
-that edge. 
-
-
-that is the difference between
-the capacity and the flow is the true
-remaining capacity for that edge. 
-this
-ensures that the remaining capacity of
-an edge is always non-negative, even if
-the flow can be negative. 
-for example in
-the residual edges we have right now 
-(0 - (-6)) = 6. 
-so we know that all
-our residual edges actually have a
-remaining capacity of 6. 
-
-
-so the algorithm
-proceeds and the ford-fulkerson method
-continues to repeatedly find augmenting
-path after augmenting paths, and to
-augment the flow until no more
-augmenting paths from s to t can be
-found.
-
-
-the key realization to make at
-this point
-is that the sum of the bottleneck values
-that we acquire with each augmenting
-paths will result in the maximum flow,
-and that's the whole premise of this
-algorithm. 
-it doesn't matter so much how
-we find augmenting paths, but so long as
-we keep summing the bottleneck values
-which they produce, we'll find the
-maximum flow. 
-
-
-so let's keep finding
-augmenting paths. 
-remember that we can
-only select edges (to be part of
-the augmenting path), whose remaining
-capacity is greater than 0.
-
-
-so the bottleneck for this
-augmenting path is 4, since 4 is the
-minimum of all the remaining capacities
-along this augmenting path.
-
-
-here is another augmenting path from the
-source to the sink. 
-we notice that
-we're actually using one of the residual
-edges we created earlier in this path.
-we also notice that there are two
-purple edges in this slide this is just
-a coincidence since both of those edges
-have the same bottleneck value of 6. 
-and then we argument the flow for this 
-augmenting path as well
-
-
-similarly, we keep finding the augmenting path,
-and we keep augmenting the flow.
-at the end we can see that if we sum all
-the bottleneck values 6 4 6 & 4, we're
-able to achieve the maximum flow, which
-is 20. 
-
-
-in terms of the time complexity,
-the ford-fulkerson method derives its
-complexity from how we actually find
-those augmenting paths, which as we know
-is left as an unspecified detail. 
-if we
-assume that to find augmenting paths it
-uses depth-first search, then
-the algorithm runs in a time complexity
-of O(fE), where f is the maximum flow the 
-algorithm calculates
-and E the total number of edges in the graph.
-
-
-here is a graph where we can derive the
-time complexity. 
-suppose that the side
-edges have very high capacity values of
-100 and the middle edge has a capacity
-of 1. 
-we can clearly tell that the
-maximum flow should be 200 because we
-can run two augmenting paths with flow
-values of 100 on the top and the bottom
-of the graph, from the source to the sink.
-
-
-however, recall that a DFS
-traversal is essentially random, so it's
-possible that it picks that middle
-edge with a capacity of 1 every single
-time and what that will do is, it'll
-limit flow we can push from the source
-the sink to be 1, so 1 is always going to
-be our bottleneck value, so we're never
-going
-to be able to augment the flow by more
-than one unit. 
-this results in flipping
-back and forth between the same two
-alternating paths for 200 iterations.
-which really kills the time complexity.
-
-
-luckily much faster algorithms and
-better heuristics exist to find the
-maximum flow value.
-one example is Edmonds-Karp, which is
-Ford-Fulkerson but instead of using a
-depth-first search, it uses a breadth-first
-search to find the shortest augmenting
-path from the source to the sink in
-every iteration.
-
-
-there's also Capacity scaling which is
-the idea of picking larger paths first
-to reduce the number of paths you need
-to find overall, and this turns out to
-work really well. 
-
-
-then there's Dinic's algorithm which
-uses a combination of a breadth-first
-search to first find a layered graph,
-that guides edges towards the sink, which
-you then use a depth-first search to
-actually find the augmenting paths.
-
-
-there's also this idea of Push Relable
-algorithms which work differently than
-the algorithms we've discussed here, i.e,
-try and find augmenting paths,
-instead Push Relable algorithms
-maintain this concept of a free flow,
-to find the maximum flow of a
-network. 
+time it should look different because
+the remaining capacities of multiple
+edges has changed. 
+
+
+we start at the source again,
+expand outwards taking all edges with a
+remaining capacity > 0,
+which in this case is only the middle
+edge leading us to the red node. 
+the top
+edge going outwards from the source is
+saturated and so is the one going
+downwards.
+
+ 
+we keep doing this and
+building the level graph layer by layer.
+
+
+so this is our new level graph.
+we can see that this time we have one
+extra layer. let's try and
+find a path from s to t. 
+
+
+once again, we
+start at the source and probe forwards
+using only the edges part of the level graph.
+
+
+we have reached a dead end in
+our Depth-First Search.
+so what we need to do is
+backtrack and keep going until we reach
+the sink.
+
+
+we made it to the sink. 
+the
+current path has a bottleneck value of
+10. 
+
+
+so we augment the flow by 10 units 
+
+
+now if we inspect the flow graph we
+notice that the blocking flow has
+once again been reached. 
+
+
+now no more flow
+can be pushed through the network when
+we build a level graph.
+which means the
+algorithm terminates. 
+
+
+the maximum flow is
+the sum of all the bottleneck values.
+which in this case is = 5 + 15 + 10 = 30
+
+
+We can also compute the maximum flow by summing the flow values going into the sink.
+
+
+one of the pitfalls of the
+current implementation of Dinic's
+algorithm is that it may
+encounter multiple dead ends during a
+Depth-First Search phase. 
+this is
+especially bad if the same dead end is
+taken multiple times during a blocking
+flow iteration. 
+
+
+to resolve this issue, in
+his original paper, Dinitz suggested
+cleaning the level graph and getting rid
+of all the dead ends, before beginning with each
+blocking flow phase. 
+
+
+then later in 1975
+Shimon Evan suggested pruning dead ends
+when backtracking during the Depth-First
+Search phase, effectively getting rid of
+dead ends on the fly as the algorithm
+executes. 
+this trick greatly speeds up
+and simplifies the algorithm because
+dead ends are only ever encountered
+once. 
+
 
