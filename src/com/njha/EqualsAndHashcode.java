@@ -20,8 +20,8 @@ public class EqualsAndHashcode {
         @Override
         public int hashCode() {
             int hash = 5;
-            hash = 89*hash + f.hashCode();
-            hash = 89*hash + f2.hashCode();
+            hash = 89 * hash + f.hashCode();
+            hash = 89 * hash + f2.hashCode();
             return hash;
         }
         
