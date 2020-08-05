@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -150,17 +151,26 @@ public class CollectionsCheatSheet {
 
     private static void stack() {
         /* >>> Stack <<< */
-        Stack<Integer> s = new Stack<Integer>();
+        
+        // Stack<Integer> s = new Stack<Integer>(); // avoid this
+        
+        Deque<Integer> s = new ArrayDeque<Integer>();
+        
+        // Deque<Integer> s = new LinkedList<Integer>(); // we can also use this
+        
         s.push(1); s.push(2); s.push(3); 
-        System.out.println(s); // [1, 2, 3]
+        System.out.println(s); // [3, 2, 1]
+        // using 
+        // Stack<Integer> s = new Stack<Integer>();
+        // would have printed [1, 2, 3]
         
         int e = s.peek();
         System.out.println(e); // 3
-        System.out.println(s); // [1, 2, 3]
+        System.out.println(s); // [3, 2, 1]
         
         e = s.pop();
         System.out.println(e); // 3
-        System.out.println(s); // [1, 2]
+        System.out.println(s); // [2, 1]
         
         while (!s.isEmpty()) {
             System.out.print(s.pop() + " ");
@@ -174,7 +184,7 @@ public class CollectionsCheatSheet {
         // Array based implementation of queue
         // Note 1: ArrayDeque implements Deque, Deque implements Queue
         // Note 2: ArrayDeque implementation of Queue does not allow null insertion
-        Queue<Integer> q = new ArrayDeque<Integer>();
+        Deque<Integer> q = new ArrayDeque<Integer>();
         q.add(1); q.add(2); q.add(3);
         System.out.println(q); // [1, 2, 3]
         
@@ -194,7 +204,7 @@ public class CollectionsCheatSheet {
         // LinkedList based implementation of queue
         // Note 1: LinkedList implements Deque, Deque implements Queue
         // Note 2: LinkedList implementation of Queue allows null insertion
-        Queue<Integer> q2 = new LinkedList<Integer>();
+        Deque<Integer> q2 = new LinkedList<Integer>();
         q2.add(1); q2.add(2); q2.add(3); q2.add(null); 
         System.out.println(q2); // [1, 2, 3, null]
         
