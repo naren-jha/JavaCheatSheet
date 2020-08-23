@@ -17,7 +17,7 @@ public class ArraysUtilityMethods {
         
         mismatch();
         
-        
+        minMaxSumUsingStream();
         
         // OTHER USEFUL METHODS
         
@@ -32,6 +32,18 @@ public class ArraysUtilityMethods {
         // Arrays.sort(a, from, to)
         // Arrays.sort(a, comparator)
         // Arrays.sort(a, from, to, comparator)
+    }
+
+    private static void minMaxSumUsingStream() {
+        int[] a = {10, 20, 30, 40, 50};
+        int sum = Arrays.stream(a).sum();
+        System.out.println(sum);
+        
+        int min = Arrays.stream(a).min().getAsInt();
+        System.out.println(min);
+        
+        int max = Arrays.stream(a).max().getAsInt();
+        System.out.println(max);
     }
 
     private static void mismatch() {
