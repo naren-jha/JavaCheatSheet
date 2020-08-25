@@ -37,13 +37,24 @@ public class ArraysUtilityMethods {
     private static void minMaxSumUsingStream() {
         int[] a = {10, 20, 30, 40, 50};
         int sum = Arrays.stream(a).sum();
-        System.out.println(sum);
+        System.out.println(sum); // 150
         
         int min = Arrays.stream(a).min().getAsInt();
-        System.out.println(min);
+        System.out.println(min); // 10
         
         int max = Arrays.stream(a).max().getAsInt();
-        System.out.println(max);
+        System.out.println(max); // 50
+        
+        // Multi-Dimensional array
+        int[][] b = { {10, 20}, {5, 7}, {30}};
+        sum = Arrays.stream(b).flatMapToInt(Arrays::stream).sum();
+        System.out.println(sum); // 72
+        
+        min = Arrays.stream(b).flatMapToInt(Arrays::stream).min().getAsInt();
+        System.out.println(min); // 5
+        
+        max = Arrays.stream(b).flatMapToInt(Arrays::stream).max().getAsInt();
+        System.out.println(max); // 30
     }
 
     private static void mismatch() {
