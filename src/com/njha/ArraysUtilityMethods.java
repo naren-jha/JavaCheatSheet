@@ -32,6 +32,8 @@ public class ArraysUtilityMethods {
         // Arrays.sort(a, from, to)
         // Arrays.sort(a, comparator)
         // Arrays.sort(a, from, to, comparator)
+        
+        // System.arraycopy(src, srcPos, dest, destPos, numOfElements);
     }
 
     private static void minMaxSumUsingStream() {
@@ -45,7 +47,7 @@ public class ArraysUtilityMethods {
         int max = Arrays.stream(a).max().getAsInt();
         System.out.println(max); // 50
         
-        // Multi-Dimensional array
+        // 2D array
         int[][] b = { {10, 20}, {5, 7}, {30}};
         sum = Arrays.stream(b).flatMapToInt(Arrays::stream).sum();
         System.out.println(sum); // 72

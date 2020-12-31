@@ -277,6 +277,8 @@ public class CollectionsCheatSheet {
         
         isRemoved = ll.removeLastOccurrence(3);
         System.out.println(isRemoved); // false
+        
+        Collections.reverse(ll);
     }
 
     private static void dynamicArray() {
